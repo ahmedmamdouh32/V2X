@@ -7,7 +7,6 @@
 
 #include "MCAL/GPIO/mcal_gpio.h"
 #include "MCAL/INTERRUPT/mcal_ext_interrupt.h"
-#include "MCAL/USART/mcal_usart.h"
 #include "HAL/LED/hal_led.h"
 #include "HAL/BUTTON/hal_button.h"
 #include "MCAL/TIMERS/TIMER0/mcal_timer0.h"
@@ -31,16 +30,6 @@ void idle_state();
 void car_state_green_routine();
 void EXT_INT0_CallBack(void);
 
-usart_cfg_t my_usart={
-	._usart_mode           = USART_MODE_ASYNCH,
-	._usart_operation_mode = USART_OP_MODE_TX_RX,
-	._usart_baudrate       = 9600,
-	._usart_data_bits      = USART_DATA_BITS_8,
-	._usart_parity         = USART_PARITY_DISABLED,
-	._usart_stop_bit       = USART_STOP_BITS_1
-};
-
-
 Seven_Segment_t traffic_light_seven_segment={
 	.SS_PINA_PORT = PORTB_INDEX,
 	.SS_PINA_PIN  = PIN3,
@@ -61,7 +50,7 @@ Timer0_cfg_t my_timer={
 	.Timer0_Preloaded_Value = 10,
 	.COV= 80
 };
-//238...122
+
 int main(void)
 {
 	led_init(ped_red_port,ped_red_pin);
@@ -75,7 +64,6 @@ int main(void)
 
 	Interrupr_INTx_Init(EXT_INT0, INTx_SENSE_RISING_EDGE, EXT_INT0_CallBack);
 
-	USART_Init(&my_usart);
 
 	Timer0_Init(&my_timer);
 
